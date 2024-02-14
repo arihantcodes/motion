@@ -1,51 +1,59 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/provider/theme-provider";
-import { ConvexProvider } from "@/components/provider/convex-provider";
 import { Toaster } from "sonner";
-const inter = Inter({ subsets: ["latin"] });
+import { Inter } from 'next/font/google'
+import type { Metadata } from 'next'
+
+import { ThemeProvider } from '@/components/provider/theme-provider'
+import { ConvexClientProvider } from '@/components/provider/convex-provider'
+import { ModalProvider } from "@/components/provider/modal-provider";
+import { EdgeStoreProvider } from "@/lib/edgestore";
+
+import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Motion-Notion clone ",
-  description: "A clone of the Motion-Notion website",
+  title: 'Motion - Note App',
+  description: 'The connected workspace where better, faster work happens.',
   icons: {
     icon: [
       {
         media: "(prefers-color-scheme: light)",
-        url: "/logo-dark.svg",
-        href: "/logo-dark.svg",
-      },
-      {
-        media: "(prefers-color-scheme: dark)",
         url: "/logo.svg",
         href: "/logo.svg",
       },
-    ],
-  },
-};
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/logo-dark.svg",
+        href: "/logo-dark.svg",
+      }
+    ]
+  }
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ConvexProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            storageKey="motion-theme-2"
-          >
-            <Toaster position="bottom-right"/>
-            {children}
-          </ThemeProvider>
-        </ConvexProvider>
+        <ConvexClientProvider>
+          <EdgeStoreProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+              storageKey="jotion-theme-2"
+            >
+              <Toaster position="bottom-center" />
+              <ModalProvider />
+              {children}
+            </ThemeProvider>
+          </EdgeStoreProvider>
+        </ConvexClientProvider>
       </body>
     </html>
-  );
+  )
 }
