@@ -8,7 +8,7 @@ const Heroes = () => {
             <Image 
              src="/documents.png"
              fill
-             className="object-contain dark:hidden"
+             className="object-contain dark:hidden "
 
              alt=""
              />
